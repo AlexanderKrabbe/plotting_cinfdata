@@ -12,12 +12,12 @@ import plotly.graph_objs as go
 list_of_time_stamps = [
 #        '2018-11-29 17:05:07',
 #        '2018-11-29 15:42:58',
-        '2018-11-26 14:52:53',
+#        '2018-11-26 14:52:53',
 #        '2018-11-22 16:32:52',
 #        '2018-11-20 16:50:03',
 #        '2018-11-07 18:50:37',
 #        '2018-10-31 16:58:48',    
-#        '',
+        '2019-01-15 20:29:19',
 #        '',
             ]
 #timestamp = '2018-11-29 17:05:07' #comment:
@@ -68,33 +68,32 @@ class get_data_for_story:
     #### RTD plus TC Plot with power ####
 ms_data = get_data_for_story(setup='microreactorNG',timestamps=list_of_time_stamps)
 labels, data, name = ms_data.get_data_from_timestamp()
+print(labels)
+RTD_plot = data['RTD temperature']
+TC_plot = data['TC temperature']
+min_length= min([len(data['Heater voltage 1'][:,1]), len(data['Heater current 1'][:,1]), len(data['Heater voltage 2'][:,1]), len(data['Heater current 2'][:,1])])
+print([len(data['Heater voltage 1'][:,1]), len(data['Heater current 1'][:,1]), len(data['Heater voltage 2'][:,1]), len(data['Heater current 2'][:,1])],min_length)
+Total_power = data['Heater voltage 1'][:min_length,1] * data['Heater current 1'][:min_length,1] + data['Heater voltage 2'][:min_length,1] * data['Heater current 2'][:min_length,1]
 
-def some_useless_stuff():
-    RTD_plot = data['RTD temperature']
-    TC_plot = data['TC temperature']
-    min_length= min([len(data['Heater voltage 1'][:,1]), len(data['Heater current 1'][:,1]), len(data['Heater voltage 2'][:,1]), len(data['Heater current 2'][:,1])])
-    print([len(data['Heater voltage 1'][:,1]), len(data['Heater current 1'][:,1]), len(data['Heater voltage 2'][:,1]), len(data['Heater current 2'][:,1])],min_length)
-    Total_power = data['Heater voltage 1'][:min_length,1] * data['Heater current 1'][:min_length,1] + data['Heater voltage 2'][:min_length,1] * data['Heater current 2'][:min_length,1]
-
-    print(Total_power)
-    fig, ax1 = plt.subplots()
-    ax2 = ax1.twinx()
-    end_time = 5000
-    start_index = 0#2000
-    ax1.plot(RTD_plot[start_index:end_time,0],RTD_plot[start_index:end_time,1],'black',linestyle = '-')#, dashes=(5,5)) 
-    ax1.plot(TC_plot[start_index:end_time,0],TC_plot[start_index:end_time,1], 'grey', linestyle ='-')
-    ax2.plot(TC_plot[start_index:end_time,0],Total_power[start_index:end_time])
-    plt.title(name)
-    plt.savefig(name+'_first.pdf')
-    #plt.show()
-    #print(data)
+print(Total_power)
+fig, ax1 = plt.subplots()
+ax2 = ax1.twinx()
+end_time = -1#5000
+start_index = 0#2000
+ax1.plot(RTD_plot[start_index:end_time,0],RTD_plot[start_index:end_time,1],'black',linestyle = '-')#, dashes=(5,5)) 
+ax1.plot(TC_plot[start_index:end_time,0],TC_plot[start_index:end_time,1], 'grey', linestyle ='-')
+ax2.plot(TC_plot[start_index:end_time,0],Total_power[start_index:end_time])
+plt.title(name)
+#plt.savefig(name+'_first.pdf')
+plt.show()
+#print(data)
 #    prnt = [i for i in data['M44'][0][:]]
 #    prnt = data['M44'][:,0]
-    #print(prnt)
-    #plt.plot(data[label][]
-    #plt.plot(x[0:index], spectrum[0:index, 1])
-    #plt.title(metadata['comment'])
-    #plt.show()
+#print(prnt)
+#plt.plot(data[label][]
+#plt.plot(x[0:index], spectrum[0:index, 1])
+#plt.title(metadata['comment'])
+#plt.show()
 
 
 N = 500
@@ -131,4 +130,4 @@ trace2 = go.Scatter(
 )
 data = [trace0, trace1, trace2]
 
-plotoff.plot(data)
+#plotoff.plot(data)
