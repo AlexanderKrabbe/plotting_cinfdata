@@ -70,60 +70,22 @@ ms_data = get_data_for_story(setup='microreactorNG',timestamps=list_of_time_stam
 labels, data, name = ms_data.get_data_from_timestamp()
 print(labels)
 RTD_plot = data['RTD temperature']
-M44 = data['M44']
+M44-y = data['M44-y']
 TC_plot = data['TC temperature']
 min_length= min([len(data['Heater voltage 1'][:,1]), len(data['Heater current 1'][:,1]), len(data['Heater voltage 2'][:,1]), len(data['Heater current 2'][:,1])])
 print([len(data['Heater voltage 1'][:,1]), len(data['Heater current 1'][:,1]), len(data['Heater voltage 2'][:,1]), len(data['Heater current 2'][:,1])],min_length)
 Total_power = data['Heater voltage 1'][:min_length,1] * data['Heater current 1'][:min_length,1] + data['Heater voltage 2'][:min_length,1] * data['Heater current 2'][:min_length,1]
 
-#print(Total_power)
-#fig, ax1 = plt.subplots()
-#ax2 = ax1.twinx()
-#end_time = -1#5000
-#start_index = 0#2000
-#ln1 = ax1.plot(M44[start_index:end_time,0],M44[start_index:end_time,1],'red',linestyle = '-', label = 'CO2')#, dashes=(5,5)) 
-#ln2 = ax2.plot(TC_plot[start_index:end_time,0],TC_plot[start_index:end_time,1], 'black', linestyle ='--', label= 'Temperature (TC)')
-#ax1.plot(M44[start_index:end_time,0],M44[start_index:end_time,1],'red',linestyle = '-', label = 'CO2')#, dashes=(5,5)) 
-#ax2.plot(TC_plot[start_index:end_time,0],TC_plot[start_index:end_time,1], 'black', linestyle ='--', label= 'Temperature (TC)')
-#ax2.plot(TC_plot[start_index:end_time,0],Total_power[start_index:end_time])
-
-#lns = ln1 + ln2
-#all_labels = [l.get_label() for l in lns]
-#plt.legend(lns, all_labels)
-#ax1.set_xlabel('Time [s]')
-#ax1.set_ylabel('SEM current [A]')
-#ax2.set_ylabel('Temperature [C]')
-#plt.title(name)
-#plt.savefig(name+'_T_M44.pdf')
-#plt.show()
-
-
-start = 12050
-end = 48000
-plots = [x for x in range(start,end,1140)]
-#for x in plots:
-#    ax2.plot((x,x),(0,100), 'blue')
-
-#plt.savefig(name+'_T_M44_with_arr_blue_lines.pdf')
-#plt.show()
-
-temp_time_index = np.searchsorted(TC_plot[:,0],plots[:])
-signal_time_index = np.searchsorted(M44[:,0],plots[:])
-print(temp_time_index)
-Temp_arr = [TC_plot[x,1] for x in temp_time_index]
-inverse_temp_arr = [1/T for T in Temp_arr]
-M44_signal = [M44[x,1] for x in signal_time_index]
-print(Temp_arr)
-print(M44_signal)
-
-
-plt.plot(inverse_temp_arr, M44_signal, '*')
-#ax.set_yscale('log')
-plt.title('Arrhenius plot AuTi on TiO2, first')
-plt.xlabel('Temperature (1/T)')
-plt.ylabel('SEM current M44')
-plt.yscale('log')
-plt.savefig('arrhenius_AuTi_first')
+print(Total_power)
+fig, ax1 = plt.subplots()
+ax2 = ax1.twinx()
+end_time = -1#5000
+start_index = 0#2000
+ax1.plot(M44-y[start_index:end_time,0],M44-y[start_index:end_time,1],'black',linestyle = '-')#, dashes=(5,5)) 
+ax1.plot(TC_plot[start_index:end_time,0],TC_plot[start_index:end_time,1], 'grey', linestyle ='-')
+ax2.plot(TC_plot[start_index:end_time,0],Total_power[start_index:end_time])
+plt.title(name)
+#plt.savefig(name+'_first.pdf')
 plt.show()
 #print(data)
 #    prnt = [i for i in data['M44'][0][:]]
